@@ -7,9 +7,9 @@
 
   <style>
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
       font-family: "Segoe UI", sans-serif;
     }
 
@@ -22,61 +22,82 @@
       overflow: hidden;
     }
 
+    /* ===== CARD ===== */
     .card {
-      background: white;
       width: 360px;
-      padding: 28px 24px;
-      border-radius: 22px;
+      background: #fff;
+      border-radius: 24px;
+      padding: 28px 22px;
       text-align: center;
       box-shadow: 0 20px 40px rgba(0,0,0,0.15);
       z-index: 2;
     }
 
-    h1 {
+    /* ===== TITLE (KHÔNG LỆCH) ===== */
+    .title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       color: #ff6f9f;
       font-size: 26px;
-      margin-bottom: 10px;
+      line-height: 1.2;
+      margin-bottom: 6px;
     }
 
-    .subtitle {
+    .title .icon {
+      font-size: 22px;
+      transform: translateY(1px);
+    }
+
+    .face {
       font-size: 14px;
-      color: #777;
-      margin-bottom: 18px;
+      color: #888;
+      margin-bottom: 14px;
     }
 
+    .desc {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 16px;
+    }
+
+    /* ===== INFO ===== */
     .info {
       background: #fff0f6;
       border-radius: 14px;
       padding: 14px;
-      text-align: left;
       font-size: 14px;
-      margin-bottom: 16px;
+      text-align: left;
+      margin-bottom: 14px;
     }
 
     .info p {
       margin: 6px 0;
     }
 
-    .extra {
+    .note {
       font-size: 14px;
-      margin-bottom: 10px;
       color: #555;
+      margin-bottom: 6px;
     }
 
+    /* ===== COUNTDOWN ===== */
     .countdown {
-      margin: 14px 0;
+      margin: 12px 0;
+      font-size: 15px;
       font-weight: 600;
       color: #ff5c8a;
-      font-size: 15px;
     }
 
+    /* ===== BUTTON ===== */
     button {
-      margin-top: 14px;
+      margin-top: 10px;
       padding: 10px 26px;
       border-radius: 24px;
       border: none;
       background: #ff8fb3;
-      color: white;
+      color: #fff;
       font-size: 15px;
       cursor: pointer;
       transition: 0.3s;
@@ -86,6 +107,7 @@
       background: #ff5c8a;
     }
 
+    /* ===== CANVAS ===== */
     canvas {
       position: fixed;
       top: 0;
@@ -101,45 +123,52 @@
 <canvas id="flowers"></canvas>
 
 <div class="card">
-  <h1>🎓 Thiệp mời chụp kỉ yếu của nhíu 🎓</h1>
-  <div class="subtitle">(｡･∀･)ﾉﾞ</div>
-
-  <p class="subtitle">Chúng ta đã cùng nhau đi qua một chặng đường thật đẹp.</p>
-
-  <div class="info">
-    <p><strong>📍 Địa điểm:</strong> Trường Cam Đường - Lớp 12A1</p>
-    <p><strong>🗓 Thời gian:</strong> 9:00 - 11h – 12/02/2026</p>
-    <p>👤 <b>Người mời:</b> Thảo Vy</p>
+  <div class="title">
+    <span class="icon">🎓</span>
+    <span>Thiệp mời chụp kỉ yếu của nhíu</span>
+    <span class="icon">🎓</span>
   </div>
 
-  <p class="extra">
-    đến thăm dự kỉ yếu của bổn cô nương,
-  </p>
-  <p class="extra">
-    rất mong bạn có mặt để lưu giữ những khoảnh khắc thanh xuân 💖
-  </p>
+  <div class="face">(｡･∀･)ﾉﾞ</div>
+
+  <div class="desc">
+    Chúng ta đã cùng nhau đi qua một chặng đường thật đẹp.
+  </div>
+
+<div class="info">
+    <p><strong>📍 Địa điểm:</strong> Trường Cam Đường - Lớp 12A1</p>
+    <p><strong>🗓 Thời gian:</strong> 9:00 - 11h – 12/02/2026</p>
+    <p><strong>👤 Người mời:</strong> Thảo Vy</p>
+  </div>
+
+
+  <div class="note">
+    Đến thăm dự kỉ yếu của bổn cô nương,
+  </div>
+
 
   <div class="countdown" id="countdown"></div>
 
-  <button>✨ Tớ sẽ tham gia ✨</button>
+  <button onclick="fireworkClick()">✨ Tớ sẽ tham gia ✨</button>
 </div>
 
 <script>
-/* ===== PHÁO HOA ===== */
+/* ================= PHÁO HOA ================= */
 const fw = document.getElementById("fireworks");
 const fctx = fw.getContext("2d");
 fw.width = innerWidth;
 fw.height = innerHeight;
+
 let particles = [];
 
 function firework(x, y) {
   for (let i = 0; i < 90; i++) {
     particles.push({
       x, y,
-      vx: Math.random()*6-3,
-      vy: Math.random()*6-3,
+      vx: Math.random()*6 - 3,
+      vy: Math.random()*6 - 3,
       a: 1,
-      r: Math.random()*2+1,
+      r: Math.random()*2 + 1,
       c: `hsl(${Math.random()*360},80%,70%)`
     });
   }
@@ -148,43 +177,61 @@ function firework(x, y) {
 function fwUpdate() {
   fctx.clearRect(0,0,fw.width,fw.height);
   particles.forEach((p,i)=>{
-    p.x+=p.vx; p.y+=p.vy; p.a-=0.015;
-    if(p.a<=0) particles.splice(i,1);
-    else{
-      fctx.globalAlpha=p.a;
+    p.x += p.vx;
+    p.y += p.vy;
+    p.a -= 0.015;
+    if (p.a <= 0) particles.splice(i,1);
+    else {
+      fctx.globalAlpha = p.a;
       fctx.beginPath();
       fctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      fctx.fillStyle=p.c;
+      fctx.fillStyle = p.c;
       fctx.fill();
     }
   });
   requestAnimationFrame(fwUpdate);
 }
 
+/* Tự bắn khi mở web */
 setTimeout(()=>{
   for(let i=0;i<6;i++){
-    setTimeout(()=>firework(
-      Math.random()*fw.width,
-      Math.random()*fw.height/2
-    ), i*300);
+    setTimeout(()=>{
+      firework(
+        Math.random()*fw.width,
+        Math.random()*fw.height/2
+      );
+    }, i*300);
   }
-},600);
+}, 600);
 
 fwUpdate();
 
-/* ===== HOA RƠI ===== */
+/* Bắn khi nhấn nút */
+function fireworkClick(){
+  for(let i=0;i<8;i++){
+    setTimeout(()=>{
+      firework(
+        Math.random()*fw.width,
+        Math.random()*fw.height/2
+      );
+    }, i*200);
+  }
+}
+
+/* ================= HOA RƠI ================= */
 const fl = document.getElementById("flowers");
 const flctx = fl.getContext("2d");
 fl.width = innerWidth;
 fl.height = innerHeight;
+
 let flowers = [];
 
 function newFlower(){
   flowers.push({
     x: Math.random()*fl.width,
     y: -10,
-    s: Math.random()*6+6,
-    v: Math.random()*1+0.5
+    s: Math.random()*6 + 8,
+    v: Math.random()*1 + 0.6
   });
 }
 
@@ -192,7 +239,7 @@ function flowerUpdate(){
   flctx.clearRect(0,0,fl.width,fl.height);
   flowers.forEach((f,i)=>{
     f.y += f.v;
-    if(f.y > fl.height) flowers.splice(i,1);
+    if (f.y > fl.height) flowers.splice(i,1);
     flctx.font = `${f.s}px serif`;
     flctx.fillText("🌸", f.x, f.y);
   });
@@ -202,14 +249,14 @@ function flowerUpdate(){
 setInterval(newFlower, 300);
 flowerUpdate();
 
-/* ===== ĐẾM NGƯỢC ===== */
+/* ================= ĐẾM NGƯỢC ================= */
 const target = new Date("2026-02-12T09:00:00").getTime();
 const cd = document.getElementById("countdown");
 
 setInterval(()=>{
   const now = Date.now();
   let d = target - now;
-  if(d <= 0){
+  if (d <= 0) {
     cd.innerText = "Đến ngày chụp kỉ yếu rồi 💕";
     return;
   }
@@ -217,13 +264,13 @@ setInterval(()=>{
   const hour = Math.floor(d/(1000*60*60)%24);
   const min = Math.floor(d/(1000*60)%60);
   const sec = Math.floor(d/1000%60);
-  cd.innerText = `${day} ngày ${hour} giờ ${min} phút ${sec} giây ♡`;
-},1000);
+  cd.innerText = `Còn ${day} ngày ${hour} giờ ${min} phút ${sec} giây ♡`;
+}, 1000);
 
 window.onresize = ()=>{
   fw.width = fl.width = innerWidth;
   fw.height = fl.height = innerHeight;
-}
+};
 </script>
 
 </body>
