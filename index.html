@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Thiệp mời chụp kỷ yếu</title>
+  <title>Thiệp mời chụp kỉ yếu của nhíu</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -15,56 +15,75 @@
 
     body {
       min-height: 100vh;
-      background: linear-gradient(135deg, #ffd6e8, #ffeaf3);
+      background: linear-gradient(120deg, #ffe6ef 0%, #e6f4ff 100%);
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       overflow: hidden;
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.85);
-      padding: 32px 40px;
-      border-radius: 20px;
-      width: 90%;
-      max-width: 420px;
+      background: white;
+      width: 360px;
+      padding: 28px 24px;
+      border-radius: 22px;
       text-align: center;
       box-shadow: 0 20px 40px rgba(0,0,0,0.15);
       z-index: 2;
     }
 
-    .card h1 {
-      color: #e75480;
-      margin-bottom: 12px;
+    h1 {
+      color: #ff6f9f;
+      font-size: 26px;
+      margin-bottom: 10px;
     }
 
-    .card p {
-      color: #555;
-      margin: 8px 0;
-      font-size: 16px;
+    .subtitle {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 18px;
     }
 
     .info {
-      margin: 18px 0;
-      padding: 12px;
       background: #fff0f6;
-      border-radius: 12px;
+      border-radius: 14px;
+      padding: 14px;
+      text-align: left;
+      font-size: 14px;
+      margin-bottom: 16px;
     }
 
-    .btn {
-      margin-top: 20px;
-      padding: 12px 22px;
+    .info p {
+      margin: 6px 0;
+    }
+
+    .extra {
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: #555;
+    }
+
+    .countdown {
+      margin: 14px 0;
+      font-weight: 600;
+      color: #ff5c8a;
+      font-size: 15px;
+    }
+
+    button {
+      margin-top: 14px;
+      padding: 10px 26px;
+      border-radius: 24px;
       border: none;
-      border-radius: 30px;
-      background: #ff85b3;
+      background: #ff8fb3;
       color: white;
-      font-size: 16px;
+      font-size: 15px;
       cursor: pointer;
       transition: 0.3s;
     }
 
-    .btn:hover {
-      background: #e75480;
+    button:hover {
+      background: #ff5c8a;
     }
 
     canvas {
@@ -72,7 +91,6 @@
       top: 0;
       left: 0;
       pointer-events: none;
-      z-index: 1;
     }
   </style>
 </head>
@@ -80,86 +98,132 @@
 <body>
 
 <canvas id="fireworks"></canvas>
+<canvas id="flowers"></canvas>
 
 <div class="card">
-  <h1>🎓 Thiệp mời chụp kỷ yếu 🎓</h1>
-  <p>Chúng ta đã cùng nhau đi qua một chặng đường thật đẹp.</p>
+  <h1>🎓 Thiệp mời chụp kỉ yếu của nhíu 🎓</h1>
+  <div class="subtitle">(｡･∀･)ﾉﾞ</div>
+
+  <p class="subtitle">Chúng ta đã cùng nhau đi qua một chặng đường thật đẹp.</p>
 
   <div class="info">
-    <p><strong>📍 Địa điểm:</strong> Trường Cam Đường</p>
-    <p><strong>🗓 Thời gian:</strong> 9:00 - 11h – 12/03/2026</p>
+    <p><strong>📍 Địa điểm:</strong> Trường Cam Đường - Lớp 12A1</p>
+    <p><strong>🗓 Thời gian:</strong> 9:00 - 11h – 12/02/2026</p>
+    <p>👤 <b>Người mời:</b> Thảo Vy</p>
   </div>
 
-  <p>Rấc mong bạn có mặt để lưu giữ những khoảnh khắc thanh xuân</p>
+  <p class="extra">
+    đến thăm dự kỉ yếu của bổn cô nương,
+  </p>
+  <p class="extra">
+    rất mong bạn có mặt để lưu giữ những khoảnh khắc thanh xuân 💖
+  </p>
 
-  <button class="btn" onclick="startFireworks()">Mình sẽ tham gia ☆*:.｡. o(≧▽≦)o .｡.:*☆</button>
+  <div class="countdown" id="countdown"></div>
+
+  <button>✨ Tớ sẽ tham gia ✨</button>
 </div>
 
 <script>
-  const canvas = document.getElementById("fireworks");
-  const ctx = canvas.getContext("2d");
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+/* ===== PHÁO HOA ===== */
+const fw = document.getElementById("fireworks");
+const fctx = fw.getContext("2d");
+fw.width = innerWidth;
+fw.height = innerHeight;
+let particles = [];
 
-  let particles = [];
-
-  function random(min, max) {
-    return Math.random() * (max - min) + min;
-  }
-
-  function createFirework(x, y) {
-    for (let i = 0; i < 80; i++) {
-      particles.push({
-        x,
-        y,
-        vx: random(-4, 4),
-        vy: random(-4, 4),
-        alpha: 1,
-        radius: random(1, 3),
-        color: `hsl(${random(0, 360)}, 80%, 70%)`
-      });
-    }
-  }
-
-  function update() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    particles.forEach((p, i) => {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.alpha -= 0.015;
-
-      if (p.alpha <= 0) {
-        particles.splice(i, 1);
-      } else {
-        ctx.globalAlpha = p.alpha;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.fill();
-      }
+function firework(x, y) {
+  for (let i = 0; i < 90; i++) {
+    particles.push({
+      x, y,
+      vx: Math.random()*6-3,
+      vy: Math.random()*6-3,
+      a: 1,
+      r: Math.random()*2+1,
+      c: `hsl(${Math.random()*360},80%,70%)`
     });
-
-    requestAnimationFrame(update);
   }
+}
 
-  function startFireworks() {
-    for (let i = 0; i < 6; i++) {
-      setTimeout(() => {
-        createFirework(
-          random(200, canvas.width - 200),
-          random(100, canvas.height / 2)
-        );
-      }, i * 300);
+function fwUpdate() {
+  fctx.clearRect(0,0,fw.width,fw.height);
+  particles.forEach((p,i)=>{
+    p.x+=p.vx; p.y+=p.vy; p.a-=0.015;
+    if(p.a<=0) particles.splice(i,1);
+    else{
+      fctx.globalAlpha=p.a;
+      fctx.beginPath();
+      fctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      fctx.fillStyle=p.c;
+      fctx.fill();
     }
-  }
-
-  update();
-
-  window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
   });
+  requestAnimationFrame(fwUpdate);
+}
+
+setTimeout(()=>{
+  for(let i=0;i<6;i++){
+    setTimeout(()=>firework(
+      Math.random()*fw.width,
+      Math.random()*fw.height/2
+    ), i*300);
+  }
+},600);
+
+fwUpdate();
+
+/* ===== HOA RƠI ===== */
+const fl = document.getElementById("flowers");
+const flctx = fl.getContext("2d");
+fl.width = innerWidth;
+fl.height = innerHeight;
+let flowers = [];
+
+function newFlower(){
+  flowers.push({
+    x: Math.random()*fl.width,
+    y: -10,
+    s: Math.random()*6+6,
+    v: Math.random()*1+0.5
+  });
+}
+
+function flowerUpdate(){
+  flctx.clearRect(0,0,fl.width,fl.height);
+  flowers.forEach((f,i)=>{
+    f.y += f.v;
+    if(f.y > fl.height) flowers.splice(i,1);
+    flctx.font = `${f.s}px serif`;
+    flctx.fillText("🌸", f.x, f.y);
+  });
+  requestAnimationFrame(flowerUpdate);
+}
+
+setInterval(newFlower, 300);
+flowerUpdate();
+
+/* ===== ĐẾM NGƯỢC ===== */
+const target = new Date("2026-02-12T09:00:00").getTime();
+const cd = document.getElementById("countdown");
+
+setInterval(()=>{
+  const now = Date.now();
+  let d = target - now;
+  if(d <= 0){
+    cd.innerText = "Đến ngày chụp kỉ yếu rồi 💕";
+    return;
+  }
+  const day = Math.floor(d/(1000*60*60*24));
+  const hour = Math.floor(d/(1000*60*60)%24);
+  const min = Math.floor(d/(1000*60)%60);
+  const sec = Math.floor(d/1000%60);
+  cd.innerText = `${day} ngày ${hour} giờ ${min} phút ${sec} giây ♡`;
+},1000);
+
+window.onresize = ()=>{
+  fw.width = fl.width = innerWidth;
+  fw.height = fl.height = innerHeight;
+}
 </script>
 
 </body>
